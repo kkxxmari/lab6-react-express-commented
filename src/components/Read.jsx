@@ -3,48 +3,52 @@ import { movieApi } from '../movieApi.js';
 import Movies from './Movies.jsx';
 
 function Read() {
-  // Start with no movies and display a loading message until the request ends.
+  // I start with an empty array while I wait for the server movies.
   const [movies, setMovies] = useState([]);
+  // I show loading until the request has finished.
   const [isLoading, setIsLoading] = useState(true);
+  // I keep any request error separate from the movie list.
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    // This controller belongs to this visit to the Read page.
+    // I create a controller so I can cancel the request when I leave this page.
     const request = new AbortController();
 
     async function loadMovies() {
       try {
-        // await pauses this function until Axios returns or the request fails.
+        // I wait here for the GET request to finish before reading its result.
         const result = await movieApi.get('/api/movies', {
+          // I connect this request to the controller used in cleanup.
           signal: request.signal
         });
-        // The Express route sends an object with a movies array.
-        // Check the response before handing it to the list component.
+        // I get the movies property from the JSON sent by Express.
+        // I check that it really is an array before trying to display the cards.
         const movieList = result.data?.movies;
         if (!Array.isArray(movieList)) {
+          // I use the same error path if the response has the wrong shape.
           throw new Error('Expected an array of movies.');
         }
-        // The new state is then passed down to Movies as a prop.
+        // I save the array in state so React can pass it down to Movies.
         if (!request.signal.aborted) setMovies(movieList);
       } catch {
-        // Do not show an error for a request cancelled by page navigation.
+        // I ignore cancellation because leaving the page is not a server error.
         if (!request.signal.aborted) {
           setMessage('Movies are unavailable at the moment. Please try again later.');
         }
       } finally {
-        // Clear the loading indicator for both successful and failed requests.
+        // I finish loading whether the request worked or failed.
         if (!request.signal.aborted) setIsLoading(false);
       }
     }
 
-    // Calling this on mount makes a return from Create fetch the latest list.
-    // Read does not need to share React state with the form.
+    // I fetch again when Read opens, including when I return from Create.
+    // I get the latest list from the server instead of sharing form state.
     loadMovies();
-    // Stop any pending download when this page closes.
+    // I cancel any request still running when this component unmounts.
     return () => request.abort();
-  }, []); // No changing dependencies: fetch when the component mounts.
+  }, []); // I use an empty dependency list to fetch on mount.
 
-  // Pick one result to display: loading, error, empty list or movie cards.
+  // I choose what to display based on loading, errors and the movie count.
   let content;
   if (isLoading) {
     content = <p role="status">Loading the movie list...</p>;
@@ -53,12 +57,14 @@ function Read() {
   } else if (movies.length === 0) {
     content = <p>There are no movies to display.</p>;
   } else {
+    // I only render the cards once I have a nonempty list.
     content = <Movies movies={movies} />;
   }
 
   return (
     <section>
       <h2 className="mb-4">This is my Read Component.</h2>
+      {/* I keep the heading visible whichever result is displayed below it. */}
       {content}
     </section>
   );

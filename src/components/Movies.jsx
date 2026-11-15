@@ -1,11 +1,12 @@
 import MovieItem from './MovieItem.jsx';
 
 function Movies({ movies }) {
-  // Destructure the array supplied by the Read component.
+  // I take the movies array from the props passed in by Read.
   return (
     <div className="movie-list">
-      {/* Each card receives one object from Read's movie array. */}
-      {/* A stable IMDb key lets React identify the same movie between renders. */}
+      {/* I make one MovieItem for each movie in the array. */}
+      {/* I use imdbID as the key so React can keep track of each card. */}
+      {/* I pass the full movie object down instead of splitting up its fields. */}
       {movies.map((movie) => (
         <MovieItem key={movie.imdbID} movie={movie} />
       ))}

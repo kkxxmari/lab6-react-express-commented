@@ -1,7 +1,8 @@
 import axios from 'axios';
 
-// Share the API address between the GET and POST calls.
-// The timeout lets either page report an error if a request stalls.
+// I keep the server address here so Read and Create use the same one.
+// I wait up to ten seconds before treating a request as timed out.
 const movieApi = axios.create({ baseURL: 'http://localhost:4000', timeout: 10000 });
 
+// I export this client so both pages share the same request settings.
 export { movieApi };

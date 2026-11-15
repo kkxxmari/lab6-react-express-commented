@@ -1,6 +1,9 @@
+/* I remove the browser margin and give the whole page a light background. */
 body {
   margin: 0;
   background: #eef1f4;
-}h2 {
+}
+/* I use a lighter heading weight to match the simple page style. */
+h2 {
   font-weight: 400;
 }
