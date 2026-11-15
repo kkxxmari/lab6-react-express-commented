@@ -1,9 +1,13 @@
 /* I remove the browser margin and give the whole page a light background. */
 body {
+  /* I set the outer margin to zero so the layout reaches the window edges. */
   margin: 0;
+  /* I use this pale colour behind the white content panel. */
   background: #eef1f4;
 }
 /* I use a lighter heading weight to match the simple page style. */
 h2 {
+  /* I use 400 for regular weight instead of the default bold heading. */
+  /* I apply this to h2 headings across the app to keep them consistent. */
   font-weight: 400;
 }

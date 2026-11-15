@@ -1,4 +1,5 @@
 import React from 'react';
+// I use ReactDOM to render the app inside an element on the HTML page.
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App.jsx';
@@ -11,6 +12,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     {/* I use browser URLs for Home, Read and Create. */}
     <BrowserRouter>
+      {/* I render App here so its navigation and pages can use this router. */}
       <App />
     </BrowserRouter>
   </React.StrictMode>
